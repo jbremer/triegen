@@ -56,23 +56,30 @@ def triegen_C_int(n, fmt):
     if n.left:
         if n.left.count() == 1:
             lines += triegen_C_int(n.left, fmt)
+            left = n.left.value
         else:
             lines += ['if(x < %s) {' % n.value]
             lines += [' ' + x for x in triegen_C_int(n.left, fmt)]
             lines += ['}']
+            left = n.value
 
     if n.right:
         if n.right.count() == 1:
             lines += triegen_C_int(n.right, fmt)
+            right = n.right.value
         else:
             lines += ['%sif(x > %s) {' % ('else ' if n.left else '', n.value)]
             lines += [' ' + x for x in triegen_C_int(n.right, fmt)]
             lines += ['}']
+            right = n.value
 
-    lines += [
-        '%sif(%s == x) {' % ('else ' if n.left or n.right else '', n.value),
-        ' return ' + fmt.format(n.value) + ';',
-        '}']
+    if n.left and n.right and left == right:
+        lines += ['else {']
+    elif n.left or n.right:
+        lines += ['else if(x == %s) {' % n.value]
+    else:
+        lines += ['if(x == %s) {' % n.value]
+    lines += [' return ' + fmt.format(n.value) + ';', '}']
 
     return lines
 
