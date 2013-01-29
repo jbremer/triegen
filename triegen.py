@@ -4,7 +4,7 @@
 Utility to generate a Trie from a set of strings.
 
 """
-import rbtree
+import RBTree
 import sys
 
 
@@ -24,7 +24,7 @@ def trie(l):
     # there's some serious stuff going on in the Garbage Collector,
     # effectively unlinking the _entire_ tree when omitting a temporary
     # storage of the tree object (due to an aggressive __del__ in RBTree)
-    tree = rbtree.RBList(l)
+    tree = RBTree.RBList(l)
     return node(tree.root)
 
 
