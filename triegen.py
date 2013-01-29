@@ -72,7 +72,7 @@ if __name__ == '__main__':
         print 'Usage: %s <infile> <funcname> <fmt>' % sys.argv[0]
         exit(0)
 
-    root = trie(x.strip() for x in open(sys.argv[1]))
+    root = trie(int(x.strip()) for x in open(sys.argv[1]))
 
     calcdiff(root)
 
